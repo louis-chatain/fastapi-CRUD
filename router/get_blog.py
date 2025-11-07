@@ -27,7 +27,7 @@ def all_blog(page: int = 1, page_size: Optional[float] = None):
 
 @router.get("/blog/{blog_id}/comments/{comment_id}", tags=["blog", "comment"])
 def get_comment(
-    blog_id: int, comment_id: int, username: Optional[str] = None, valid: bool = True
+    blog_id: int, comment_id: int, username: Optional[str] = None, valid: bool = None
 ):
     """
     Simulates retreiving a comment of a blog
@@ -35,7 +35,7 @@ def get_comment(
     - **blog_id** mandatory path parameter
     - **comment_id** mandatory path parameter
     - **username** optional query parameter
-    - **valid** optionall query parameter
+    - **valid** optional query parameter
     """
     return {
         "message": f"Comment N°{comment_id} under the blog N°{blog_id} from {username}. {valid}"
