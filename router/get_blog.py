@@ -1,11 +1,14 @@
 from enum import Enum
 from typing import Optional
-from fastapi import APIRouter ,Response, status
+from fastapi import APIRouter, Depends ,Response, status
 
 router = APIRouter(
     prefix="/blog",
     tags=["blog"]
 )
+
+def function_we_are_gonna_use_again_and_again():
+    return {"req" : "Hello everynya!"}
 
 # @app.get('/blog/all')
 # def all_blog():
@@ -48,8 +51,8 @@ class Blogtype(str, Enum):
 
 
 @router.get("/type/{type}")
-def get_blog_type(type: Blogtype):
-    return {"message": f"you are seeing blogs with the type: {type}"}
+def get_blog_type(type: Blogtype, req_parameter: dict = Depends(function_we_are_gonna_use_again_and_again)):
+    return {"message": f"you are seeing blogs with the type: {type}", "req_paramater" : req_parameter}
 
 
 @router.get("/{id}")
@@ -60,6 +63,3 @@ def get_blog(id: int, response: Response):
     else:
         response.status_code = status.HTTP_200_OK
         return {"message": f"Hello user with id: {id}"}
-    
-def function_we_are_gonna_use_again_and_again():
-    return {"req" : "Hello everynya!"}
