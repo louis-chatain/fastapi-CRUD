@@ -13,8 +13,7 @@ router = APIRouter(
 
 
 @router.get(
-    "/blog/all",
-    tags=["blog"],
+    "/all",
     summary="Retreive all blogs",
     description="This API call simulates fetching all blogs.",
     response_description="The list of available blogs.",
@@ -25,7 +24,7 @@ def all_blog(page: int = 1, page_size: Optional[float] = None):
     }
 
 
-@router.get("/blog/{blog_id}/comments/{comment_id}", tags=["blog", "comment"])
+@router.get("/{blog_id}/comments/{comment_id}", tags=["comment"])
 def get_comment(
     blog_id: int, comment_id: int, username: Optional[str] = None, valid: bool = None
 ):
@@ -48,12 +47,12 @@ class Blogtype(str, Enum):
     howto = "howto"
 
 
-@router.get("/blog/type/{type}", tags=["blog"])
+@router.get("/type/{type}")
 def get_blog_type(type: Blogtype):
     return {"message": f"you are seeing blogs with the type: {type}"}
 
 
-@router.get("/blog/{id}", tags=["blog"])
+@router.get("/{id}")
 def get_blog(id: int, response: Response):
     if id == 5:
         response.status_code = status.HTTP_404_NOT_FOUND
@@ -61,3 +60,6 @@ def get_blog(id: int, response: Response):
     else:
         response.status_code = status.HTTP_200_OK
         return {"message": f"Hello user with id: {id}"}
+    
+def function_we_are_gonna_use_again_and_again():
+    return {"req" : "Hello everynya!"}
