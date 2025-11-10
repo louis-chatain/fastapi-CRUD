@@ -1,11 +1,14 @@
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
-from router import get_blog, post_blog
+from db import models
+from db.database import engine
+from router import get_blog, post_blog, user
 
 
 app = FastAPI(swagger_ui_parameters={"syntaxHighlight": {"theme": "obsidian"}})
 app.include_router(get_blog.router)
 app.include_router(post_blog.router)
+app.include_router(user.router)
 
 favicon_path = "favicon.ico"
 
@@ -18,3 +21,5 @@ async def favicon():
 @app.get("/", summary="Says 'Hello world!'", tags=["hello"])
 def index():
     return {"message": "Hello World!"}
+
+models.Base.metadata.create_all(engine)
