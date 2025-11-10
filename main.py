@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
-from db import models
+from db.models import Base
 from db.database import engine
 from router import get_blog, post_blog, user
 
@@ -22,4 +22,4 @@ async def favicon():
 def index():
     return {"message": "Hello World!"}
 
-models.Base.metadata.create_all(engine)
+Base.metadata.create_all(engine)
