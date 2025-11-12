@@ -2,13 +2,14 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from db.models import Base
 from db.database import engine
-from router import get_blog, post_blog, user
+from router import article, get_blog, post_blog, user
 
 
 app = FastAPI(swagger_ui_parameters={"syntaxHighlight": {"theme": "obsidian"}})
 app.include_router(get_blog.router)
 app.include_router(post_blog.router)
 app.include_router(user.router)
+app.include_router(article.router)
 
 favicon_path = "favicon.ico"
 
