@@ -1,9 +1,9 @@
-from fastapi import FastAPI, HTTPException, Request, status
-from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse
+from fastapi import FastAPI, Request, status
+from fastapi.responses import FileResponse, JSONResponse
 from db.models import Base
 from db.database import engine
 from exceptions import StoryException
-from router import article, get_blog, post_blog, user
+from router import article, get_blog, post_blog, user, product
 
 
 app = FastAPI(swagger_ui_parameters={"syntaxHighlight": {"theme": "obsidian"}})
@@ -11,6 +11,7 @@ app.include_router(get_blog.router)
 app.include_router(post_blog.router)
 app.include_router(user.router)
 app.include_router(article.router)
+app.include_router(product.router)
 
 favicon_path = "favicon.ico"
 
