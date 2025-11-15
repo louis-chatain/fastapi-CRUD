@@ -4,6 +4,7 @@ from db.models import Base
 from db.database import engine
 from exceptions import StoryException
 from router import article, get_blog, post_blog, user, product
+from auth import authentication
 
 
 app = FastAPI(swagger_ui_parameters={"syntaxHighlight": {"theme": "obsidian"}})
@@ -12,6 +13,7 @@ app.include_router(post_blog.router)
 app.include_router(user.router)
 app.include_router(article.router)
 app.include_router(product.router)
+app.include_router(authentication.router)
 
 favicon_path = "favicon.ico"
 

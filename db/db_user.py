@@ -31,6 +31,14 @@ def read_user(id: int, db: Session):
     return user
 
 
+def read_user_by_username(username: str, db: Session):
+    user = db.query(DbUser).filter_by(username=username).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"User username {username} not found.")
+    return user
+
+
 def update_user(id: int, request: UserBase, db: Session):
     user = db.query(DbUser).filter(DbUser.id == id)
     if not user.first():
