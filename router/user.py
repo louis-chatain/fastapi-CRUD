@@ -11,6 +11,7 @@ router = APIRouter(prefix="/user", tags=["user"])
 def create_user(request: UserBase, db: Session = Depends(get_db)):
     return db_user.create_user(request, db)
 
+
 @router.get("/read_all", response_model=List[UserDisplay])
 def read_all(db: Session = Depends(get_db)):
     return db_user.read_all(db)
@@ -19,6 +20,7 @@ def read_all(db: Session = Depends(get_db)):
 @router.get("/{id}", response_model=UserDisplay)
 def read_user(id: int, db: Session = Depends(get_db)):
     return db_user.read_user(id, db)
+
 
 @router.post("/{id}/update", response_model=UserDisplay)
 def update_user(id: int, request: UserBase, db: Session = Depends(get_db)):
