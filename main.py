@@ -3,7 +3,7 @@ from fastapi.responses import FileResponse, JSONResponse
 from db.models import Base
 from db.database import engine
 from exceptions import StoryException
-from router import article, get_blog, post_blog, user, product
+from router import article, file, get_blog, post_blog, user, product
 from auth import authentication
 
 
@@ -14,6 +14,7 @@ app.include_router(user.router)
 app.include_router(article.router)
 app.include_router(product.router)
 app.include_router(authentication.router)
+app.include_router(file.router)
 
 favicon_path = "favicon.ico"
 
