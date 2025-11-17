@@ -24,7 +24,9 @@ def read_all(db: Session = Depends(get_db)):
 def read_article(id: int, db: Session = Depends(get_db), current_user: UserBase = Depends(get_current_user)):
     return {
         "data": db_article.read_article(id, db),
-        "current user": current_user
+        "current_user_user_name": current_user.username,
+        "current__user_email": current_user.email,
+        "current_user_id": current_user.id
     }
 
 
