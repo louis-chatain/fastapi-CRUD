@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request, status
 from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from db.models import Base
 from db.database import engine
 from exceptions import StoryException
@@ -43,3 +44,5 @@ def index():
 
 
 Base.metadata.create_all(engine)
+
+app.mount("/files", StaticFiles(directory="files"), name="files") #makes files statically available
