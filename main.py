@@ -8,7 +8,7 @@ from router import article, file, get_blog, post_blog, user, product
 from auth import authentication
 
 
-app = FastAPI(swagger_ui_parameters={"syntaxHighlight": {"theme": "obsidian"}})
+app = FastAPI(title="Learning FastApi", swagger_ui_parameters={"syntaxHighlight": {"theme": "obsidian"}})
 app.include_router(get_blog.router)
 app.include_router(post_blog.router)
 app.include_router(user.router)
@@ -26,11 +26,6 @@ def story_exception_handler(request: Request, exc: StoryException):
         status_code=status.HTTP_418_IM_A_TEAPOT,
         content={"detail": exc.name}
     )
-
-
-# @app.exception_handler(HTTPException)
-# def custom_handler(request: Request, exc: StoryException):
-#     return PlainTextResponse(str(exc), status_code=status.HTTP_400_BAD_REQUEST)
 
 
 @app.get("/favicon.ico", include_in_schema=False)
