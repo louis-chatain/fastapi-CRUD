@@ -166,3 +166,7 @@ dog_network.db
 
 #files
 files
+
+#database
+
+*.db
