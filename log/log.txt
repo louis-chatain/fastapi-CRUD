@@ -1,0 +1,1 @@
+MyAPI: call to read all product.

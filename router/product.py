@@ -2,6 +2,8 @@ from typing import List, Optional
 from fastapi import APIRouter, Cookie, Form, Header, Response, status
 from fastapi.responses import HTMLResponse, PlainTextResponse
 
+from log.custom_log import log
+
 router = APIRouter(prefix="/product", tags=["product"])
 
 products = ["watch", "camera", "phone"]
@@ -15,6 +17,7 @@ def add_product(name: str = Form(Ellipsis)):
 
 @router.get("/all")
 def read_all():
+    log("MyAPI", "call to read all product.")
     data = " ".join(products)
     response = Response(content=data, media_type="text/plain")
     response.set_cookie(key="test_cookie", value="whatever_cookie_value")
