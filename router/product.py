@@ -1,3 +1,4 @@
+import time
 from typing import List, Optional
 from fastapi import APIRouter, Cookie, Form, Header, Response, status
 from fastapi.responses import HTMLResponse, PlainTextResponse
@@ -10,13 +11,19 @@ products = ["watch", "camera", "phone"]
 
 
 @router.post("/add")
-def add_product(name: str = Form(Ellipsis)):
+def add_product(name: str = Form(Ellipsis)) -> list[str]:
     products.append(name)
     return products
 
 
+async def wait_a_little() -> str:
+    time.sleep(20)
+    return "ok"
+
+
 @router.get("/all")
-def read_all():
+async def read_all():
+    await wait_a_little()
     log("MyAPI", "call to read all product.")
     data = " ".join(products)
     response = Response(content=data, media_type="text/plain")
