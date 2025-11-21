@@ -1,7 +1,7 @@
 from typing import List
 from pydantic import BaseModel
 
-
+#-----------------------------------------------------------------------------
 # Article inside UserDisplay
 class Article(BaseModel):
     title: str
@@ -23,6 +23,7 @@ class UserDisplay(BaseModel): # data that we will send back to the user
     class ConfigDict():
         from_attributes = True
 
+#-----------------------------------------------------------------------------
 # user inside ArticleDisplay
 class User(BaseModel):
     id: int
@@ -44,3 +45,9 @@ class ArticleDisplay(BaseModel): # data that we will send back to the user
     user: User
     class ConfigDict():
         from_attributes = True
+#---------------------------------------------------------------------------
+
+class ProductBase(BaseModel):  # data that we will receive from the user
+    title: str
+    description: str
+    price: float
