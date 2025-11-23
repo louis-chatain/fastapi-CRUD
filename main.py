@@ -1,7 +1,7 @@
 import time
 from typing import Awaitable, Callable
-from fastapi import FastAPI, Request, Response, status
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi import FastAPI, Request, Response, WebSocket, status
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from db.models import Base
 from db.database import engine
@@ -9,6 +9,7 @@ from exceptions import StoryException
 from router import article, file, get_blog, post_blog, user, product
 from auth import authentication
 from templates import templates
+from client import html
 
 
 app = FastAPI(
@@ -38,9 +39,25 @@ async def favicon():
     return FileResponse(favicon_path)
 
 
-@app.get("/", summary="Says 'Hello world!'", tags=["hello"])
+@app.get("/hello", summary="Says 'Hello world!'", tags=["hello"])
 def index():
     return {"message": "Hello World!"}
+
+
+@app.get("/")
+async def get():
+    return HTMLResponse(html)
+
+clients = []
+
+@app.websocket("/chat")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    clients.append(websocket)
+    while True:
+        data = await websocket.receive_text()
+        for client in clients:
+            await client.send_text(data)
 
 
 @app.middleware("http")
