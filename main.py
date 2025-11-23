@@ -1,4 +1,6 @@
-from fastapi import FastAPI, Request, status
+import time
+from typing import Awaitable, Callable
+from fastapi import FastAPI, Request, Response, status
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from db.models import Base
@@ -9,7 +11,10 @@ from auth import authentication
 from templates import templates
 
 
-app = FastAPI(title="Learning FastApi", swagger_ui_parameters={"syntaxHighlight": {"theme": "obsidian"}})
+app = FastAPI(
+    title="Learning FastApi",
+    swagger_ui_parameters={"syntaxHighlight": {"theme": "obsidian"}},
+)
 app.include_router(get_blog.router)
 app.include_router(post_blog.router)
 app.include_router(user.router)
@@ -24,8 +29,7 @@ favicon_path = "favicon.ico"
 @app.exception_handler(StoryException)
 def story_exception_handler(request: Request, exc: StoryException):
     return JSONResponse(
-        status_code=status.HTTP_418_IM_A_TEAPOT,
-        content={"detail": exc.name}
+        status_code=status.HTTP_418_IM_A_TEAPOT, content={"detail": exc.name}
     )
 
 
@@ -39,7 +43,22 @@ def index():
     return {"message": "Hello World!"}
 
 
+@app.middleware("http")
+async def add_process_time_header(
+    request: Request,
+    call_next: Callable[[Request],
+    Awaitable[Response]]
+) -> Response:
+    start_time = time.time()
+    response = await call_next(request)
+    process_time = time.time() - start_time
+    response.headers["Process-Time"] = str(process_time)
+    return response
+
+
 Base.metadata.create_all(engine)
 
-app.mount("/files", StaticFiles(directory="files"), name="files") #makes files statically available
+app.mount(
+    "/files", StaticFiles(directory="files"), name="files"
+)  # makes files statically available
 app.mount("/templates/static", StaticFiles(directory="templates/static"), name="static")
